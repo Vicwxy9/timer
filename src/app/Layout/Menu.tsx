@@ -5,7 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-import type { IconProps } from "element-plus"
 import type { Ref, StyleValue } from "vue"
 import type { Router } from "vue-router"
 import type { I18nKey } from "@app/locale"
@@ -14,99 +13,8 @@ import { defineComponent, h, onMounted, ref, watch } from "vue"
 import { ElIcon, ElMenu, ElMenuItem, ElMenuItemGroup } from "element-plus"
 import { useRouter } from "vue-router"
 import { t } from "@app/locale"
-import { getGuidePageUrl } from "@util/constant/url"
-import { Aim, HelpFilled, Memo, Rank, SetUp, Stopwatch, Timer } from "@element-plus/icons-vue"
-import Trend from "./icons/Trend"
-import Table from "./icons/Table"
-import Database from "./icons/Database"
-import Whitelist from "./icons/Whitelist"
-import Website from "./icons/Website"
-import About from "./icons/About"
 import { createTabAfterCurrent } from "@api/chrome/tab"
-import { ANALYSIS_ROUTE, MERGE_ROUTE } from "@app/router/constants"
-
-type _MenuItem = {
-    title: I18nKey
-    icon: IconProps | string
-    route?: string
-    href?: string
-    index?: string
-}
-
-type _MenuGroup = {
-    title: I18nKey
-    children: _MenuItem[]
-}
-
-/**
- * Menu items
- */
-const MENUS: _MenuGroup[] = [{
-    title: msg => msg.menu.data,
-    children: [{
-        title: msg => msg.menu.dashboard,
-        route: '/data/dashboard',
-        icon: Stopwatch
-    }, {
-        title: msg => msg.menu.dataReport,
-        route: '/data/report',
-        icon: Table
-    }, {
-        title: msg => msg.menu.siteAnalysis,
-        route: ANALYSIS_ROUTE,
-        icon: Trend
-    }, {
-        title: msg => msg.menu.dataClear,
-        route: '/data/manage',
-        icon: Database
-    }]
-}, {
-    title: msg => msg.menu.behavior,
-    children: [{
-        title: msg => msg.menu.habit,
-        route: '/behavior/habit',
-        icon: Aim
-    }, {
-        title: msg => msg.menu.limit,
-        route: '/behavior/limit',
-        icon: Timer
-    }]
-}, {
-    title: msg => msg.menu.additional,
-    children: [{
-        title: msg => msg.menu.siteManage,
-        route: '/additional/site-manage',
-        icon: Website
-    }, {
-        title: msg => msg.menu.whitelist,
-        route: '/additional/whitelist',
-        icon: Whitelist
-    }, {
-        title: msg => msg.menu.mergeRule,
-        route: MERGE_ROUTE,
-        icon: Rank
-    }, {
-        title: msg => msg.menu.option,
-        route: '/additional/option',
-        icon: SetUp
-    }]
-}, {
-    title: msg => msg.menu.other,
-    children: [{
-        title: msg => msg.base.guidePage,
-        href: getGuidePageUrl(),
-        icon: Memo,
-        index: '_guide',
-    }, {
-        title: msg => msg.menu.helpUs,
-        route: '/other/help',
-        icon: HelpFilled,
-    }, {
-        title: msg => msg.menu.about,
-        route: '/other/about',
-        icon: About,
-    }]
-}]
+import { MenuItem, MENUS } from "./item"
 
 function openMenu(route: string, title: I18nKey, router: Router) {
     const currentPath = router.currentRoute.value?.path
@@ -118,7 +26,7 @@ function openMenu(route: string, title: I18nKey, router: Router) {
 
 const openHref = (href: string) => createTabAfterCurrent(href)
 
-function handleClick(menuItem: _MenuItem, router: Router, currentActive: Ref<string>) {
+function handleClick(menuItem: MenuItem, router: Router, currentActive: Ref<string>) {
     const { route, title, href } = menuItem
     if (route) {
         openMenu(route, title, router)
@@ -135,7 +43,7 @@ const iconStyle: StyleValue = {
     lineHeight: '0.83em'
 }
 
-function renderMenuLeaf(menu: _MenuItem, router: Router, currentActive: Ref<string>) {
+function renderMenuLeaf(menu: MenuItem, router: Router, currentActive: Ref<string>) {
     const { route, title, icon, index } = menu
     return <ElMenuItem
         onClick={(_item) => handleClick(menu, router, currentActive)}

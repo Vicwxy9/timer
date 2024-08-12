@@ -1,6 +1,19 @@
-@media screen and (max-width: 600px)
-    body
-        100vw
+$mobile-width: 640px
+
+@media screen and (max-width: $mobile-width)
     #app
-        .el-aside
-            width: 0px
+        .app-layout
+            .app-aside
+                display: none
+            .app-header
+                background-color: var(--el-menu-bg-color)
+                color: var(--el-menu-text-color)
+            .content-container
+                width: 100%
+                padding: 0
+
+@media screen and (min-width: $mobile-width)
+    #app
+        .app-layout
+            .app-header
+                display: none

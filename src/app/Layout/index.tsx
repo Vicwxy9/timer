@@ -5,22 +5,28 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { ElAside, ElContainer, ElScrollbar } from "element-plus"
+import { ElAside, ElContainer, ElHeader, ElScrollbar } from "element-plus"
 import { defineComponent } from "vue"
 import Menu from "./Menu"
+import Nav from "./HeadNav"
 import VersionTag from "./VersionTag"
 import { RouterView } from "vue-router"
 
 const _default = defineComponent(() => {
     return () => (
-        <ElContainer>
-            <ElAside>
-                <ElScrollbar>
-                    <Menu />
-                </ElScrollbar>
-            </ElAside>
-            <ElContainer class="app-container">
-                <RouterView />
+        <ElContainer class="app-layout">
+            <ElHeader class="app-header">
+                <Nav />
+            </ElHeader>
+            <ElContainer>
+                <ElAside class="app-aside">
+                    <ElScrollbar>
+                        <Menu />
+                    </ElScrollbar>
+                </ElAside>
+                <ElContainer class="app-container">
+                    <RouterView />
+                </ElContainer>
             </ElContainer>
             <VersionTag />
         </ElContainer>
