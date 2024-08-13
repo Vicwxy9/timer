@@ -3,16 +3,23 @@ $mobile-width: 640px
 @media screen and (max-width: $mobile-width)
     #app
         .app-layout
-            .app-aside
+            .app-aside,.version-tag
                 display: none
             .app-header
                 background-color: var(--el-menu-bg-color)
                 color: var(--el-menu-text-color)
+                height: fit-content
                 .nav-container
                     height: 100%
-                    display: flex
-                    justify-content: space-around
-                    align-items: center
+                    .nav-content
+                        height: var(--el-header-height)
+                        display: flex
+                        justify-content: space-between
+                        align-items: center
+                    .menu-wrapper
+                        transition: all .5s ease-in-out
+                    .menu-wrapper.close
+                        display: none
             .content-container
                 width: 100%
                 padding: 0

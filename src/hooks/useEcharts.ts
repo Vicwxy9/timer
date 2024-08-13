@@ -9,6 +9,7 @@
 import { ElLoading } from "element-plus"
 import { type Ref, onMounted, ref, isRef, watch } from "vue"
 import { init, type ECharts } from "echarts"
+import { useWindowSize } from "@vueuse/core"
 
 export abstract class EchartsWrapper<BizOption, EchartsOption> {
     protected instance: ECharts
@@ -23,6 +24,11 @@ export abstract class EchartsWrapper<BizOption, EchartsOption> {
         const option = await this.generateOption(biz)
         if (!option) return
         this.instance.setOption(option, { notMerge: false })
+    }
+
+    resize() {
+        if (!this.instance) return
+        this.instance.resize()
     }
 
     protected getDom(): HTMLElement {
@@ -73,6 +79,10 @@ export const useEcharts = <BizOption, EchartsOption, EW extends EchartsWrapper<B
         !manual && refresh()
         watchRef && isRef(fetch) && watch(fetch, refresh)
     })
+
+    const { width, height } = useWindowSize()
+    watch([width, height], () => wrapperInstance?.resize?.())
+
     return {
         refresh,
         elRef,

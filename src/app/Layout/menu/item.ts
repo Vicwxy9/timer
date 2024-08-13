@@ -7,7 +7,7 @@
  */
 
 import type { IconProps } from "element-plus"
-import { Aim, HelpFilled, Memo, Rank, SetUp, Stopwatch, Timer } from "@element-plus/icons-vue"
+import { Aim, Connection, HelpFilled, Histogram, Memo, More, MoreFilled, Rank, SetUp, Stopwatch, Timer, View } from "@element-plus/icons-vue"
 import { getGuidePageUrl } from "@util/constant/url"
 import Trend from "../icons/Trend"
 import Table from "../icons/Table"
@@ -26,8 +26,7 @@ export type MenuItem = {
     index?: string
 }
 
-export type MenuGroup = {
-    title: I18nKey
+export type MenuGroup = Omit<MenuItem, 'href' | 'route'> & {
     children: MenuItem[]
 }
 
@@ -36,6 +35,8 @@ export type MenuGroup = {
  */
 export const MENUS: MenuGroup[] = [{
     title: msg => msg.menu.data,
+    index: 'data',
+    icon: Histogram,
     children: [{
         title: msg => msg.menu.dashboard,
         route: '/data/dashboard',
@@ -55,6 +56,8 @@ export const MENUS: MenuGroup[] = [{
     }]
 }, {
     title: msg => msg.menu.behavior,
+    index: 'behavior',
+    icon: View,
     children: [{
         title: msg => msg.menu.habit,
         route: '/behavior/habit',
@@ -66,6 +69,8 @@ export const MENUS: MenuGroup[] = [{
     }]
 }, {
     title: msg => msg.menu.additional,
+    index: 'additional',
+    icon: Connection,
     children: [{
         title: msg => msg.menu.siteManage,
         route: '/additional/site-manage',
@@ -85,6 +90,8 @@ export const MENUS: MenuGroup[] = [{
     }]
 }, {
     title: msg => msg.menu.other,
+    index: 'other',
+    icon: More,
     children: [{
         title: msg => msg.base.guidePage,
         href: getGuidePageUrl(),

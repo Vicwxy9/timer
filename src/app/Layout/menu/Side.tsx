@@ -14,7 +14,6 @@ import { t } from "@app/locale"
 import { MenuItem, MENUS } from "./item"
 import { handleClick, initTitle } from "./route"
 
-
 const iconStyle: StyleValue = {
     paddingRight: '4px',
     paddingLeft: '4px',
