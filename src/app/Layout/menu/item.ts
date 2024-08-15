@@ -7,7 +7,7 @@
  */
 
 import type { IconProps } from "element-plus"
-import { Aim, Connection, HelpFilled, Histogram, Memo, More, MoreFilled, Rank, SetUp, Stopwatch, Timer, View } from "@element-plus/icons-vue"
+import { Aim, Connection, HelpFilled, Histogram, Memo, MoreFilled, Rank, SetUp, Stopwatch, Timer, View } from "@element-plus/icons-vue"
 import { getGuidePageUrl } from "@util/constant/url"
 import Trend from "../icons/Trend"
 import Table from "../icons/Table"
@@ -91,7 +91,7 @@ export const MENUS: MenuGroup[] = [{
 }, {
     title: msg => msg.menu.other,
     index: 'other',
-    icon: More,
+    icon: MoreFilled,
     children: [{
         title: msg => msg.base.guidePage,
         href: getGuidePageUrl(),

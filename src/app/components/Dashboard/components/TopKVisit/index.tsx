@@ -38,7 +38,7 @@ const fetchData = async () => {
 
 const _default = defineComponent(() => {
     const { elRef } = useEcharts(Wrapper, fetchData)
-    return () => <div class="chart-container" ref={elRef} />
+    return () => <div class="top-visit-container" ref={elRef} />
 })
 
 export default _default

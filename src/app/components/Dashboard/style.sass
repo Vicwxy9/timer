@@ -4,19 +4,26 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+
+@media (max-width:600px)
+    .dashboard-container
+        .indicator-container
+            text-align: center
+            min-height: unset !important
+
 .dashboard-container
+    width: 100%
     .el-row
-        margin-bottom: 15px
         .el-col
-            height: 100%
-
-    .el-card__body
-        padding: 20px
-        width: calc(100% - 40px)
-        height: calc(100% - 40px)
-
-        .chart-container
-            height: 100%
+            margin-bottom: 15px
+            .el-card__body
+                padding: 20px
+                width: calc(100% - 40px)
+                height: calc(100% - 40px)
+    .indicator-container
+        padding-bottom: 20px
+    .indicator-container,.mom-container,.top-visit-container,.calendar-container
+        min-height: 280px
     .help-us-link
         color: var(--el-text-color-primary)
         text-align: center

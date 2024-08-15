@@ -29,7 +29,7 @@ const fetchData = async (): Promise<BizOption> => {
 const _default = defineComponent(() => {
     const { elRef } = useEcharts(Wrapper, fetchData)
 
-    return () => <div class="chart-container" ref={elRef} />
+    return () => <div class="calendar-container" ref={elRef} />
 })
 
 export default _default

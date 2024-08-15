@@ -20,6 +20,7 @@ import { useRequest } from "@hooks"
 import metaService from "@service/meta-service"
 import { t } from "@app/locale"
 import { REVIEW_PAGE } from "@util/constant/url"
+import { useWindowSize } from "@vueuse/core"
 
 const ROW_GUTTER = 15
 
@@ -35,20 +36,34 @@ const _default = defineComponent(() => {
         refresh()
     }
 
+    const { width } = useWindowSize()
+
     return () => (
         <ContentContainer class="dashboard-container">
-            <ElRow gutter={ROW_GUTTER} style={{ height: "300px" }}>
-                <DashboardCard span={4}>
-                    <Indicator />
-                </DashboardCard>
-                <DashboardCard span={12}>
-                    <MonthOnMonth />
-                </DashboardCard>
-                <DashboardCard span={8}>
-                    <TopKVisit />
-                </DashboardCard>
-            </ElRow>
-            <ElRow gutter={ROW_GUTTER} style={{ height: "280px" }}>
+            <ElRow gutter={ROW_GUTTER}>
+                {width.value < 1400
+                    ? <>
+                        <DashboardCard span={width.value < 600 ? 24 : 8}>
+                            <Indicator />
+                        </DashboardCard>
+                        <DashboardCard span={width.value < 600 ? 24 : 16}>
+                            <TopKVisit />
+                        </DashboardCard>
+                        <DashboardCard span={24}>
+                            <MonthOnMonth />
+                        </DashboardCard>
+                    </>
+                    : <>
+                        <DashboardCard span={4}>
+                            <Indicator />
+                        </DashboardCard>
+                        <DashboardCard span={12}>
+                            <MonthOnMonth />
+                        </DashboardCard>
+                        <DashboardCard span={8}>
+                            <TopKVisit />
+                        </DashboardCard>
+                    </>}
                 <DashboardCard span={24}>
                     <Calendar />
                 </DashboardCard>

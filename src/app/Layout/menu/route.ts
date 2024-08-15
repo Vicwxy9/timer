@@ -14,13 +14,13 @@ function openMenu(route: string, title: I18nKey, router: Router) {
 
 const openHref = (href: string) => createTabAfterCurrent(href)
 
-export function handleClick(menuItem: MenuItem, router: Router, currentActive: Ref<string>) {
+export function handleClick(menuItem: MenuItem, router: Router, currentActive?: Ref<string>) {
     const { route, title, href } = menuItem
     if (route) {
         openMenu(route, title, router)
     } else {
         openHref(href)
-        currentActive.value = router.currentRoute?.value?.path
+        currentActive && (currentActive.value = router.currentRoute?.value?.path)
     }
 }
 

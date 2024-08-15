@@ -30,6 +30,7 @@ import DateIterator from "@util/date-iterator"
 import { cvt2LocaleTime } from "@app/util/time"
 import { getCompareColor, getDiffColor, tooltipDot } from "@app/util/echarts"
 import { EchartsWrapper, useEcharts } from "@hooks"
+import DashboardCard from "../DashboardCard"
 
 type EcOption = ComposeOption<
     | BarSeriesOption
@@ -160,7 +161,7 @@ const fetchData = async (): Promise<[thisMonth: Row[], lastMonth: Row[]]> => {
 
 const _default = defineComponent(() => {
     const { elRef } = useEcharts(ChartWrapper, fetchData)
-    return () => <div class="chart-container" ref={elRef} />
+    return () => <div class="mom-container" ref={elRef} />
 })
 
 export default _default

@@ -20,7 +20,7 @@ const style: StyleValue = {
 
 const _default = defineComponent(() => {
     return () => (
-        <div class="version-tag" style={style}>
+        <div class="version-tag hidden-md-and-down" style={style}>
             <p style={{ fontSize: "10px" }}>
                 {`v${packageInfo.version}`}
             </p>
