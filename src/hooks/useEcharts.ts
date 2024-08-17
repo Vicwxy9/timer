@@ -13,6 +13,11 @@ import { useWindowSize } from "@vueuse/core"
 
 export abstract class EchartsWrapper<BizOption, EchartsOption> {
     protected instance: ECharts
+    /**
+     * true if need to re-generate option while size changing, or false
+     */
+    protected isSizeSensitize: boolean = false
+    private lastBizOption: BizOption
 
     init(container: HTMLDivElement) {
         this.instance = init(container)
@@ -21,13 +26,20 @@ export abstract class EchartsWrapper<BizOption, EchartsOption> {
 
     async render(biz: BizOption) {
         if (!this.instance) return
+        this.lastBizOption = biz
+        await this.innerRender()
+    }
+
+    private async innerRender() {
+        const biz = this.lastBizOption
         const option = await this.generateOption(biz)
         if (!option) return
         this.instance.setOption(option, { notMerge: false })
     }
 
-    resize() {
+    async resize() {
         if (!this.instance) return
+        this.isSizeSensitize && await this.innerRender()
         this.instance.resize()
     }
 
@@ -38,6 +50,10 @@ export abstract class EchartsWrapper<BizOption, EchartsOption> {
     protected abstract generateOption(biz: BizOption): Promise<EchartsOption> | EchartsOption
 
     protected afterInit() {
+    }
+
+    protected getDomWidth(): number {
+        return this.getDom()?.clientWidth ?? 0
     }
 }
 

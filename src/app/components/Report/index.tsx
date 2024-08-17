@@ -196,12 +196,14 @@ const _default = defineComponent(() => {
     }
 
     return () => <ContentContainer v-slots={{
-        filter: () => <ReportFilter
-            initial={filterOption.value}
-            onChange={setFilterOption}
-            onDownload={handleDownload}
-            onBatchDelete={filterOption => handleBatchDelete(table.value, filterOption, refresh)}
-        />,
+        filter: () => (
+            <ReportFilter
+                initial={filterOption.value}
+                onChange={setFilterOption}
+                onDownload={handleDownload}
+                onBatchDelete={filterOption => handleBatchDelete(table.value, filterOption, refresh)}
+            />
+        ),
         content: () => <>
             <ReportTable
                 data={pagination.value?.list}

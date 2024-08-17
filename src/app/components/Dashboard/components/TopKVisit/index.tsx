@@ -6,13 +6,6 @@
  */
 import type { StatQueryParam } from "@service/stat-service"
 
-import { use } from "echarts/core"
-import { PieChart } from "echarts/charts"
-import { TitleComponent, TooltipComponent } from "echarts/components"
-import { SVGRenderer } from "echarts/renderers"
-
-use([PieChart, TitleComponent, TooltipComponent, SVGRenderer])
-
 import statService from "@service/stat-service"
 import { MILL_PER_DAY } from "@util/time"
 import { defineComponent } from "vue"
@@ -41,10 +34,12 @@ const fetchData = async () => {
 const _default = defineComponent(() => {
     const { elRef } = useEcharts(Wrapper, fetchData)
     const title = t(msg => msg.dashboard.topK.title, { k: TOP_NUM, day: DAY_NUM })
-    return () => <>
-        <ChartTitle text={title} />
-        <div class="top-visit-container" ref={elRef} />
-    </>
+    return () => (
+        <div class="top-visit-container">
+            <ChartTitle text={title} />
+            <div style={{ flex: 1 }} ref={elRef} />
+        </div>
+    )
 })
 
 export default _default

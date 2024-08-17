@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { defineComponent } from "vue"
+import { computed, defineComponent } from "vue"
 import ContentContainer from "../common/ContentContainer"
 import DashboardCard from './DashboardCard'
 import "./style"
@@ -16,7 +16,7 @@ import MonthOnMonth from "./components/MonthOnMonth"
 import TopKVisit from "./components/TopKVisit"
 import Calendar from "./components/Calendar"
 import { useRouter } from "vue-router"
-import { useRequest } from "@hooks"
+import { useMediaSize, useRequest } from "@hooks"
 import metaService from "@service/meta-service"
 import { t } from "@app/locale"
 import { REVIEW_PAGE } from "@util/constant/url"
@@ -37,6 +37,12 @@ const _default = defineComponent(() => {
     }
 
     const { width } = useWindowSize()
+    const mediaSize = useMediaSize()
+    const showCalendar = computed(() => {
+        const ms = mediaSize.value
+        // Not supported screens equals medium size or smaller
+        return ms === 'lg' || ms === 'xl'
+    })
 
     return () => (
         <ContentContainer class="dashboard-container">
@@ -64,7 +70,7 @@ const _default = defineComponent(() => {
                             <TopKVisit />
                         </DashboardCard>
                     </>}
-                <DashboardCard span={24}>
+                <DashboardCard v-show={showCalendar.value} span={24}>
                     <Calendar />
                 </DashboardCard>
             </ElRow>

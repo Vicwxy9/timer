@@ -17,6 +17,7 @@ import { initLocale } from "@i18n"
 import { toggle, init as initTheme } from "@util/dark-mode"
 import optionService from "@service/option-service"
 import { initElementLocale } from "@i18n/element"
+import { initEcharts } from "./echarts"
 
 async function main() {
     // Init theme with cache first
@@ -24,6 +25,7 @@ async function main() {
     // Calculate the latest mode
     optionService.isDarkMode().then(toggle)
     await initLocale()
+    initEcharts()
     const app: App = createApp(Main)
     installRouter(app)
     app.mount('#app')

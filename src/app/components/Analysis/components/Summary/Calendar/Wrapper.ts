@@ -14,10 +14,6 @@ import {
     EffectScatterSeriesOption
 } from "echarts"
 import { formatTime, getAllDatesBetween, getWeeksAgo, parseTime } from "@util/time"
-import { EffectScatterChart } from "echarts/charts"
-import { SVGRenderer } from "echarts/renderers"
-import { use } from "echarts/core"
-import { GridComponent, TitleComponent, TooltipComponent, VisualMapComponent } from "echarts/components"
 import { groupBy, rotate } from "@util/array"
 import { t } from "@app/locale"
 import { getRegularTextColor, getSecondaryTextColor } from "@util/style"
@@ -42,15 +38,6 @@ type _Value = [
     // date yyyyMMdd
     string,
 ]
-
-use([
-    SVGRenderer,
-    EffectScatterChart,
-    TooltipComponent,
-    GridComponent,
-    VisualMapComponent,
-    TitleComponent,
-])
 
 const WEEK_NUM = 26
 
