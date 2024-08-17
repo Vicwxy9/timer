@@ -38,10 +38,10 @@ a
     margin: auto
 
 .content-container
-    margin-top: 30px
-    margin-bottom: 30px
-    height: calc(100% - 30px)
-    padding: 0 30px
+    margin-top: var(--timer-container-container-padding)
+    margin-bottom: var(--timer-container-container-padding)
+    height: calc(100% - var(--timer-container-container-padding))
+    padding: 0 var(--timer-container-container-padding)
     overflow: hidden
 
 #app
@@ -150,15 +150,20 @@ a
     --el-menu-item-height: 48px
     --el-menu-active-color: var(--el-menu-text-color)
     --el-menu-item-active-bg-color: var(--el-color-primary)
-    --timer-kanban-border: 1px var(--el-border-color) var(--el-border-style)
-    --el-alert-description-font-size: 75% !important
     --el-menu-bg-color: #1d222d
-    --timer-app-container-bg-color: var(--el-fill-color-blank)
     --el-menu-text-color: #c1c6c8
     --el-menu-hover-bg-color: #262f3e
+    --el-alert-description-font-size: 75% !important
+    --timer-kanban-border: 1px var(--el-border-color) var(--el-border-style)
+    --timer-app-container-bg-color: var(--el-fill-color-blank)
     --timer-chart-increase-color: var(--el-color-danger)
     --timer-chart-decrease-color: var(--el-color-success-light-3)
+    --timer-container-container-padding: 30px
 
 html[data-theme='dark']:root
     // timer
     --timer-app-container-bg-color: var(--el-fill-color-lighter)
+
+@media (max-width: 600px)
+    \:root
+        --timer-container-container-padding: 20px

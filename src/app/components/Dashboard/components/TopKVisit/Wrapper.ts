@@ -39,15 +39,18 @@ export type BizOption = {
 
 function generateOption(data: BizOption[]): EcOption {
     const textColor = getPrimaryTextColor()
+    // console.log(dom.clientWidth)
+    // const titleText = t(msg => msg.dashboard.topK.title, { k: TOP_NUM, day: DAY_NUM })
     return {
-        title: {
-            ...BASE_TITLE_OPTION,
-            text: t(msg => msg.dashboard.topK.title, { k: TOP_NUM, day: DAY_NUM }),
-            textStyle: {
-                color: textColor,
-                fontSize: '14px',
-            }
-        },
+        // title: {
+        //     ...BASE_TITLE_OPTION,
+        //     text: titleText,
+        //     textStyle: {
+        //         color: textColor,
+        //         fontSize: '14px',
+        //         overflow: 'breakAll',
+        //     }
+        // },
         tooltip: {
             show: true,
             borderWidth: 0,

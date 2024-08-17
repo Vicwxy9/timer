@@ -18,6 +18,8 @@ import { MILL_PER_DAY } from "@util/time"
 import { defineComponent } from "vue"
 import { useEcharts } from "@hooks"
 import Wrapper, { BizOption, DAY_NUM, TOP_NUM } from "./Wrapper"
+import ChartTitle from "../../ChartTitle"
+import { t } from "@app/locale"
 
 const fetchData = async () => {
     const now = new Date()
@@ -38,7 +40,11 @@ const fetchData = async () => {
 
 const _default = defineComponent(() => {
     const { elRef } = useEcharts(Wrapper, fetchData)
-    return () => <div class="top-visit-container" ref={elRef} />
+    const title = t(msg => msg.dashboard.topK.title, { k: TOP_NUM, day: DAY_NUM })
+    return () => <>
+        <ChartTitle text={title} />
+        <div class="top-visit-container" ref={elRef} />
+    </>
 })
 
 export default _default
