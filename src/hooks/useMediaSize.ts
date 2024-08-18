@@ -1,5 +1,5 @@
 import { useWindowSize } from "@vueuse/core"
-import { computed, ref } from "vue"
+import { computed } from "vue"
 
 export type MediaSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 

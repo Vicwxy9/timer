@@ -1,6 +1,7 @@
 import { defineComponent, PropType } from "vue"
 import Item from "./Item"
 import "./style"
+import { ElCard } from "element-plus"
 
 const _default = defineComponent({
     props: {
@@ -10,9 +11,11 @@ const _default = defineComponent({
     setup(props, ctx) {
 
         return () => (
-            <div class="report-card-list">
+            <div class="report-list">
                 {props.data?.map(row => (
-                    <Item value={row} />
+                    <ElCard>
+                        <Item value={row} />
+                    </ElCard>
                 ))}
             </div>
         )

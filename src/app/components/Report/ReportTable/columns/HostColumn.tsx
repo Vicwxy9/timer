@@ -29,7 +29,9 @@ const _default = defineComponent(() => {
                             </p>
                         )}
                     </HostMergedAlert>
-                    : <HostAlert {...row} clickable={!isRemainHost(row.host)} />
+                    : <div style={{ margin: 'auto', width: 'fit-content' }}>
+                        <HostAlert {...row} clickable={!isRemainHost(row.host)} />
+                    </div>
             }
         </ElTableColumn>
     )

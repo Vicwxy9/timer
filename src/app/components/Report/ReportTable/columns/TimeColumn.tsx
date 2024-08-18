@@ -8,7 +8,7 @@
 import { defineComponent } from "vue"
 import { Effect, ElTableColumn, ElTooltip } from "element-plus"
 import { t } from "@app/locale"
-import CompositionTable from "./CompositionTable"
+import CompositionTable from "../../common/CompositionTable"
 import { useReportFilter } from "../../context"
 import { ElTableRowScope } from "@src/element-ui/table"
 

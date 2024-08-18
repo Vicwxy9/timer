@@ -37,7 +37,7 @@ const _default = defineComponent({
             ? <ElLink href={href.value} target={target.value} underline={props.clickable} style={{ cursor: cursor.value }}>
                 {props.host}
             </ElLink>
-            : <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '3px' }}>
+            : <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
                 <ElLink href={href.value} target={target.value} underline={props.clickable} style={{ cursor: cursor.value }}>
                     {props.host}
                 </ElLink>

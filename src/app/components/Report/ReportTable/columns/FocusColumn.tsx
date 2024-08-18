@@ -9,7 +9,7 @@ import { t } from "@app/locale"
 import { Effect, ElTableColumn, ElTooltip } from "element-plus"
 import { defineComponent } from "vue"
 import { periodFormatter } from "@app/util/time"
-import CompositionTable from './CompositionTable'
+import CompositionTable from '../../common/CompositionTable'
 import { ElTableRowScope } from "@src/element-ui/table"
 import { useReportFilter } from "../../context"
 

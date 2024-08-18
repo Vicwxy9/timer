@@ -13,7 +13,7 @@ import { I18nKey, t } from "@app/locale"
 import statService from "@service/stat-service"
 import './styles/element'
 import ReportTable, { TableInstance } from "./ReportTable"
-import ReportCardList from "./ReportCardList"
+import ReportList from "./ReportList"
 import ReportFilter from "./ReportFilter"
 import Pagination from "../common/Pagination"
 import ContentContainer from "../common/ContentContainer"
@@ -222,7 +222,7 @@ const _default = defineComponent(() => {
         ),
         default: () => isXs.value
             ? (
-                <ReportCardList
+                <ReportList
                     data={pagination.value?.list}
                 />
             ) : (
