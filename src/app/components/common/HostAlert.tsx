@@ -7,7 +7,7 @@
 
 import { IS_SAFARI } from "@util/constant/environment"
 import { ElLink } from "element-plus"
-import { computed, defineComponent, StyleValue } from "vue"
+import { computed, defineComponent } from "vue"
 
 const _default = defineComponent({
     props: {
@@ -37,12 +37,12 @@ const _default = defineComponent({
             ? <ElLink href={href.value} target={target.value} underline={props.clickable} style={{ cursor: cursor.value }}>
                 {props.host}
             </ElLink>
-            : <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            : <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '3px' }}>
                 <ElLink href={href.value} target={target.value} underline={props.clickable} style={{ cursor: cursor.value }}>
                     {props.host}
                 </ElLink>
                 {props.iconUrl &&
-                    <div style={{ height: '20px', marginLeft: '3px' }}>
+                    <div style={{ display: 'inline-flex', alignItems: 'center' }}>
                         <img src={props.iconUrl} width={12} height={12} />
                     </div>
                 }

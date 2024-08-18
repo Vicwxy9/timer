@@ -13,6 +13,7 @@ import { I18nKey, t } from "@app/locale"
 import statService from "@service/stat-service"
 import './styles/element'
 import ReportTable, { TableInstance } from "./ReportTable"
+import ReportCardList from "./ReportCardList"
 import ReportFilter from "./ReportFilter"
 import Pagination from "../common/Pagination"
 import ContentContainer from "../common/ContentContainer"
@@ -24,7 +25,8 @@ import { groupBy, sum } from "@util/array"
 import { formatTime } from "@util/time"
 import StatDatabase from "@db/stat-database"
 import { initProvider } from "./context"
-import { useRequest, useState, useWindowVisible } from "@hooks"
+import { useMediaSize, useRequest, useState, useWindowVisible } from "@hooks"
+import ContentCard from "../common/ContentCard"
 
 const statDatabase = new StatDatabase(chrome.storage.local)
 
@@ -186,6 +188,9 @@ const _default = defineComponent(() => {
         { loadingTarget: ".container-card>.el-card__body", deps: [queryParam, page] }
     )
 
+    const mediaSize = useMediaSize()
+    const isXs = computed(() => mediaSize.value === 'xs')
+
     // Query data if window become visible
     useWindowVisible({ onVisible: refresh })
 
@@ -193,6 +198,17 @@ const _default = defineComponent(() => {
         const rows = await statService.select(queryParam.value, true)
         format === 'json' && exportJson(filterOption.value, rows)
         format === 'csv' && exportCsv(filterOption.value, rows)
+    }
+
+    const slots = {
+        filter: () => (
+            <ReportFilter
+                initial={filterOption.value}
+                onChange={setFilterOption}
+                onDownload={handleDownload}
+                onBatchDelete={filterOption => handleBatchDelete(table.value, filterOption, refresh)}
+            />
+        ),
     }
 
     return () => <ContentContainer v-slots={{
@@ -204,21 +220,28 @@ const _default = defineComponent(() => {
                 onBatchDelete={filterOption => handleBatchDelete(table.value, filterOption, refresh)}
             />
         ),
-        content: () => <>
-            <ReportTable
-                data={pagination.value?.list}
-                defaultSort={sort.value}
-                ref={table}
-                onSortChange={setSort}
-                onItemDelete={refresh}
-                onAliasChange={(host, newAlias) => handleAliasChange({ host, merged: filterOption.value?.mergeHost }, newAlias, pagination.value?.list)}
-            />
-            <Pagination
-                defaultValue={page.value}
-                total={pagination.value?.total || 0}
-                onChange={setPage}
-            />
-        </>,
+        default: () => isXs.value
+            ? (
+                <ReportCardList
+                    data={pagination.value?.list}
+                />
+            ) : (
+                <ContentCard>
+                    <ReportTable
+                        data={pagination.value?.list}
+                        defaultSort={sort.value}
+                        ref={table}
+                        onSortChange={setSort}
+                        onItemDelete={refresh}
+                        onAliasChange={(host, newAlias) => handleAliasChange({ host, merged: filterOption.value?.mergeHost }, newAlias, pagination.value?.list)}
+                    />
+                    <Pagination
+                        defaultValue={page.value}
+                        total={pagination.value?.total || 0}
+                        onChange={setPage}
+                    />
+                </ContentCard>
+            )
     }} />
 })
 
