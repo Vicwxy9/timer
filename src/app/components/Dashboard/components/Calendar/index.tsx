@@ -4,7 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { useEcharts, useRequest } from "@hooks"
+
+import { useRequest } from "@hooks"
+import { useEcharts } from "@hooks/useEcharts"
 import { locale } from "@i18n"
 import statService from "@service/stat-service"
 import { getWeeksAgo, MILL_PER_HOUR } from "@util/time"

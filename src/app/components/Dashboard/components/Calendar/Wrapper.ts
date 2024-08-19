@@ -10,7 +10,7 @@ import type {
     ScatterSeriesOption, HeatmapSeriesOption,
 } from "echarts"
 
-import { EchartsWrapper } from "@hooks"
+import { EchartsWrapper } from "@hooks/useEcharts"
 import { formatPeriodCommon, getAllDatesBetween, MILL_PER_HOUR, MILL_PER_MINUTE } from "@util/time"
 import { groupBy, rotate } from "@util/array"
 import { t } from "@app/locale"
