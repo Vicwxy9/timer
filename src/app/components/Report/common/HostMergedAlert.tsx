@@ -1,5 +1,5 @@
 import { Effect, ElTooltip } from "element-plus"
-import { defineComponent, h } from "vue"
+import { defineComponent, h, PropType } from "vue"
 
 /**
  * Merged host column
@@ -11,7 +11,8 @@ const default_ = defineComponent({
         mergedHost: {
             type: String,
             required: true
-        }
+        },
+        trigger: String as PropType<"click" | "hover">,
     },
     setup(props, ctx) {
         return () => (
@@ -19,6 +20,7 @@ const default_ = defineComponent({
                 placement="left"
                 effect={Effect.LIGHT}
                 offset={10}
+                trigger={props.trigger}
                 v-slots={{ content: () => h(ctx.slots.default) }}
             >
                 <a class="el-link el-link--default is-underline">
