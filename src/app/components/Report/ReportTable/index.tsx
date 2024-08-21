@@ -19,7 +19,7 @@ import ContentCard from "@app/components/common/ContentCard"
 import Pagination from "@app/components/common/Pagination"
 import statService, { StatQueryParam } from "@service/stat-service"
 import siteService from "@service/site-service"
-import { cvtOption2Param } from "../ReportFilter/common"
+import { cvtOption2Param } from "../common"
 
 function computeTimerQueryParam(filterOption: ReportFilterOption, sort: SortInfo): StatQueryParam {
     const param = cvtOption2Param(filterOption) || {}
@@ -50,7 +50,7 @@ const _default = defineComponent({
         const queryParam = computed(() => computeTimerQueryParam(filterOption.value, sort.value))
         const { data, refresh } = useRequest(
             () => statService.selectByPage(queryParam.value, page.value, true),
-            { loadingTarget: "#report-table-content", deps: [queryParam, page] }
+            { loadingTarget: "#report-table-content", deps: [queryParam, page], manual: true }
         )
         // Query data if window become visible
         useWindowVisible({ onVisible: refresh })

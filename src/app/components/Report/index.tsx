@@ -151,7 +151,7 @@ const _default = defineComponent(() => {
     const [filterOption, setFilterOption] = useState(initialFilterParam)
     initProvider(filterOption)
 
-    const table = ref<DisplayComponent>()
+    const displayComp = ref<DisplayComponent>()
 
     const mediaSize = useMediaSize()
     const isXs = computed(() => mediaSize.value === 'xs')
@@ -161,12 +161,12 @@ const _default = defineComponent(() => {
             <ReportFilter
                 initial={filterOption.value}
                 onChange={setFilterOption}
-                onBatchDelete={filterOption => handleBatchDelete(table.value, filterOption)}
+                onBatchDelete={filterOption => handleBatchDelete(displayComp.value, filterOption)}
             />
         ),
         default: () => isXs.value
-            ? <ReportList />
-            : <ReportTable defaultSort={initialSort} ref={table} />
+            ? <ReportList ref={displayComp} />
+            : <ReportTable defaultSort={initialSort} ref={displayComp} />
     }} />
 })
 

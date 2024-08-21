@@ -11,9 +11,17 @@
     text-align: center
     color: var(--el-text-color-regular)
 .report-item
-    .report-item-title
+    .report-item-head
         display: flex
         justify-content: space-between
+        .report-item-title
+            display: inline-flex
+            align-items: center
+            gap: 2px
+            .el-checkbox
+                height: 100%
+        >button
+            padding: 0
     .report-item-content
         display: flex
         gap: 5px
