@@ -1,24 +1,49 @@
-import { defineComponent, PropType } from "vue"
+import { defineComponent } from "vue"
 import Item from "./Item"
 import "./style"
 import { ElCard } from "element-plus"
+import { t } from "@app/locale"
+import { useState } from "@hooks/useState"
+import { DisplayComponent, useReportFilter } from "../context"
+import { useScrollRequest } from "@hooks/useScrollRequest"
+import { cvtOption2Param } from "../ReportFilter/common"
+import statService from "@service/stat-service"
 
 const _default = defineComponent({
-    props: {
-        data: Array as PropType<timer.stat.Row[]>,
-        end: Boolean,
-    },
-    setup(props, ctx) {
+    setup(_, ctx) {
+        const filterOption = useReportFilter()
 
-        return () => (
-            <div class="report-list">
-                {props.data?.map(row => (
-                    <ElCard>
-                        <Item value={row} />
-                    </ElCard>
-                ))}
+        const { data, loading, loadMoreAsync, end } = useScrollRequest(async (num, size) => {
+            const param = cvtOption2Param(filterOption.value)
+            const pagination = await statService.selectByPage(param, { num, size })
+            return pagination.list
+        })
+
+        const [selected, setSelected] = useState<timer.stat.Row[]>([])
+
+        ctx.expose({
+            getSelected: () => selected.value,
+            refresh: () => { },
+        } satisfies DisplayComponent)
+
+        return () => <>
+            <div class="report-list-wrapper">
+                <div
+                    class="report-list"
+                    v-infinite-scroll={loadMoreAsync}
+                    infinite-scroll-disabled={end.value || loading.value}
+                >
+                    {data.value?.map(row => (
+                        <ElCard>
+                            <Item value={row} />
+                        </ElCard>
+                    ))}
+                </div>
+                <p class="scroll-info" v-loading={loading.value}>
+                    {end.value ? t(msg => msg.report.noMore) : (loading.value ? 'Loading ...' : 'Load More')}
+                </p>
             </div>
-        )
+        </>
     },
 })
 

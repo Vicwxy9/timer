@@ -5,41 +5,25 @@
  * https://opensource.org/licenses/MIT
  */
 
-import type { StatQueryParam } from "@service/stat-service"
 import type { Router, RouteLocation } from "vue-router"
 
 import { computed, defineComponent, ref } from "vue"
 import { I18nKey, t } from "@app/locale"
 import statService from "@service/stat-service"
 import './styles/element'
-import ReportTable, { TableInstance } from "./ReportTable"
+import ReportTable from "./ReportTable"
 import ReportList from "./ReportList"
 import ReportFilter from "./ReportFilter"
-import Pagination from "../common/Pagination"
 import ContentContainer from "../common/ContentContainer"
 import { ElMessage, ElMessageBox } from "element-plus"
-import siteService from "@service/site-service"
-import { exportCsv, exportJson } from "./file-export"
 import { useRoute, useRouter } from "vue-router"
 import { groupBy, sum } from "@util/array"
 import { formatTime } from "@util/time"
 import StatDatabase from "@db/stat-database"
-import { initProvider } from "./context"
-import { useMediaSize, useRequest, useState, useWindowVisible } from "@hooks"
-import ContentCard from "../common/ContentCard"
+import { DisplayComponent, initProvider, ReportFilterOption } from "./context"
+import { useMediaSize, useState } from "@hooks"
 
 const statDatabase = new StatDatabase(chrome.storage.local)
-
-async function handleAliasChange(key: timer.site.SiteKey, newAlias: string, data: timer.stat.Row[]) {
-    newAlias = newAlias?.trim?.()
-    if (!newAlias) {
-        await siteService.removeAlias(key)
-    } else {
-        await siteService.saveAlias(key, newAlias, 'USER')
-    }
-    data?.filter(item => item.host === key.host)
-        ?.forEach(item => item.alias = newAlias)
-}
 
 async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: boolean, dateRange: [Date, Date]): Promise<string> {
     // host => total focus
@@ -95,8 +79,8 @@ async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: bool
     return t(key, i18nParam)
 }
 
-async function handleBatchDelete(tableInstance: TableInstance, filterOption: ReportFilterOption, afterDelete: Function) {
-    const selected: timer.stat.Row[] = tableInstance?.getSelected?.() || []
+async function handleBatchDelete(displayComp: DisplayComponent, filterOption: ReportFilterOption) {
+    const selected: timer.stat.Row[] = displayComp?.getSelected?.() || []
     if (!selected?.length) {
         ElMessage.info(t(msg => msg.report.batchDelete.noSelectedMsg))
         return
@@ -115,7 +99,7 @@ async function handleBatchDelete(tableInstance: TableInstance, filterOption: Rep
         // Delete
         await deleteBatch(selected, filterOption.mergeDate, filterOption.dateRange)
         ElMessage.success(t(msg => msg.operation.successMsg))
-        afterDelete?.()
+        displayComp?.refresh?.()
     }).catch(() => {
         // Do nothing
     })
@@ -160,88 +144,29 @@ function initQueryParam(route: RouteLocation, router: Router): [ReportFilterOpti
     return [filterOption, sortInfo]
 }
 
-function computeTimerQueryParam(filterOption: ReportFilterOption, sort: SortInfo): StatQueryParam {
-    return {
-        host: filterOption.host,
-        date: filterOption.dateRange,
-        mergeHost: filterOption.mergeHost,
-        mergeDate: filterOption.mergeDate,
-        inclusiveRemote: filterOption.readRemote,
-        sort: sort.prop,
-        sortOrder: sort.order === 'ascending' ? 'ASC' : 'DESC'
-    }
-}
-
 const _default = defineComponent(() => {
     const route = useRoute()
     const router = useRouter()
     const [initialFilterParam, initialSort] = initQueryParam(route, router)
     const [filterOption, setFilterOption] = useState(initialFilterParam)
     initProvider(filterOption)
-    const [sort, setSort] = useState(initialSort)
 
-    const [page, setPage] = useState<timer.common.PageQuery>({ size: 10, num: 1 })
-    const queryParam = computed(() => computeTimerQueryParam(filterOption.value, sort.value))
-    const table = ref<TableInstance>()
-    const { data: pagination, refresh } = useRequest(
-        () => statService.selectByPage(queryParam.value, page.value, true),
-        { loadingTarget: ".container-card>.el-card__body", deps: [queryParam, page] }
-    )
+    const table = ref<DisplayComponent>()
 
     const mediaSize = useMediaSize()
     const isXs = computed(() => mediaSize.value === 'xs')
-
-    // Query data if window become visible
-    useWindowVisible({ onVisible: refresh })
-
-    const handleDownload = async (format: FileFormat) => {
-        const rows = await statService.select(queryParam.value, true)
-        format === 'json' && exportJson(filterOption.value, rows)
-        format === 'csv' && exportCsv(filterOption.value, rows)
-    }
-
-    const slots = {
-        filter: () => (
-            <ReportFilter
-                initial={filterOption.value}
-                onChange={setFilterOption}
-                onDownload={handleDownload}
-                onBatchDelete={filterOption => handleBatchDelete(table.value, filterOption, refresh)}
-            />
-        ),
-    }
 
     return () => <ContentContainer v-slots={{
         filter: () => (
             <ReportFilter
                 initial={filterOption.value}
                 onChange={setFilterOption}
-                onDownload={handleDownload}
-                onBatchDelete={filterOption => handleBatchDelete(table.value, filterOption, refresh)}
+                onBatchDelete={filterOption => handleBatchDelete(table.value, filterOption)}
             />
         ),
         default: () => isXs.value
-            ? (
-                <ReportList
-                    data={pagination.value?.list}
-                />
-            ) : (
-                <ContentCard>
-                    <ReportTable
-                        data={pagination.value?.list}
-                        defaultSort={sort.value}
-                        ref={table}
-                        onSortChange={setSort}
-                        onItemDelete={refresh}
-                        onAliasChange={(host, newAlias) => handleAliasChange({ host, merged: filterOption.value?.mergeHost }, newAlias, pagination.value?.list)}
-                    />
-                    <Pagination
-                        defaultValue={page.value}
-                        total={pagination.value?.total || 0}
-                        onChange={setPage}
-                    />
-                </ContentCard>
-            )
+            ? <ReportList />
+            : <ReportTable defaultSort={initialSort} ref={table} />
     }} />
 })
 
